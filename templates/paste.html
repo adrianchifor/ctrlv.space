@@ -31,6 +31,7 @@
 
         if (password) {
             if (ciphertext && ciphertext.length > 1) {
+                ciphertext = ciphertext.replace(/&#34;/g, '"');
                 try {
                     var text = sjcl.decrypt(password, ciphertext, { ks:256 });
                     mde.value(text);

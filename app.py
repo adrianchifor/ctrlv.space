@@ -41,7 +41,7 @@ def paste(key):
         return render_template("404.html")
 
     ciphertext = db.get(key)
-    return render_template("paste.html", ciphertext=ciphertext)
+    return render_template("paste.html", ciphertext=str(ciphertext))
 
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)
