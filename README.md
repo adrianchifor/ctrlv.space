@@ -1,6 +1,6 @@
 # [Ctrl + V Space](https://ctrlv.space)
 
-Encrypted paste service. **Encryption only happens on the client-side** and the **password never reaches the server**.
+Encrypted paste service. **Encryption (AES256 using [Stanford Javascript Crypto Library](http://bitwiseshiftleft.github.io/sjcl/)) only happens on the client-side** and the **password never reaches the server**.
 
 Uses Redis for storing encrypted content.
 
