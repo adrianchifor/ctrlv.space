@@ -1,0 +1,117 @@
+<!doctype html>
+<head>
+    <meta name="referrer" content="no-referrer" />
+    <title>Ctrl+V</title>
+    <link rel="icon" href="/static/icon.png">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
+    <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="http://bitwiseshiftleft.github.io/sjcl/sjcl.js"></script>
+    <script src="https://cdn.rawgit.com/bermi/password-generator/master/dist/password-generator.min.js"></script>
+    <style type="text/css">
+        h1, h2, .btn, .content-area {
+            font-family: 'Open Sans', sans-serif;
+            -webkit-transition: all 0.3s ease-in-out;
+            transition: all 0.3s ease-in-out;
+        }
+        h1 {
+            padding: 16px 32px 0px 32px;
+            text-align: center;
+            font-size: 24px;
+            color: rgba(0,0,0,0.6);
+        }
+        h2 {
+            padding: 0px 32px 12px 32px;
+            text-align: center;
+            font-size: 20px;
+            color: rgba(0,0,0,0.4);
+        }
+        .btn {
+            margin-bottom: 32px;
+            cursor: pointer;
+            text-align: center;
+            margin-left: auto;
+            margin-right: auto;
+            width: 70px;
+            padding: 12px;
+            font-size: 20px;
+            color:rgba(0,0,0,0.6);
+            background-color:rgba(255,255,255,0.08);
+            border-color:rgba(0,0,0,0.2);
+            border-style:solid;
+            border-width:1px;
+            border-radius:0.3rem;
+            transition: color 0.2s, background-color 0.2s, border-color 0.2s;
+        }
+        .btn:hover {
+            color:rgba(0,0,0,0.8);
+            text-decoration:none;
+            background-color:rgba(0,0,0,0.01);
+            border-color:rgba(0,0,0,0.3);
+        }
+        .content-area {
+            margin-left: 16px;
+            margin-right: 16px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Encrypted paste service.</h1>
+    <h2 id="instruction" onclick="selectText('instruction')">Just write, save and share the link.</h2>
+    <div id="save" class="btn" onclick="return save();">Save</div>
+
+    <div class="content-area">
+        <textarea id="textbox"></textarea>
+    </div>
+
+    <script>
+        var mde = new SimpleMDE({
+    		element: document.getElementById("textbox"),
+    		spellChecker: false,
+            autofocus: true
+	    });
+
+        var saved = false;
+        function save() {
+            if (saved) {
+                return false;
+            }
+
+            if (mde.value().length == 0) {
+                $("#instruction").text("Text box is empty.");
+
+                setTimeout(function() {
+                    $("#instruction").text("Just write, save and share the link.");
+                }, 1500);
+
+                return false;
+            }
+
+            var password = generatePassword(16, false);
+            var ciphertext = sjcl.encrypt(password, mde.value(), { ks:256 });
+
+            $.post("/api/v1/create", { "ciphertext": ciphertext }, function(data) {
+                if (!data.error) {
+                    $("#instruction").text("https://ctrlv.space/" + data.key + "#" + password);
+                    selectText('instruction');
+                    saved = true;
+                }
+            });
+
+            return true;
+        }
+
+        function selectText(containerId) {
+            if (document.selection) {
+                var range = document.body.createTextRange();
+                range.moveToElementText(document.getElementById(containerId));
+                range.select();
+            } else if (window.getSelection) {
+                var range = document.createRange();
+                range.selectNode(document.getElementById(containerId));
+                window.getSelection().addRange(range);
+            }
+        }
+    </script>
+</body>

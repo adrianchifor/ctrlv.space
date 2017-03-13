@@ -1,0 +1,48 @@
+<!doctype html>
+<head>
+    <meta name="referrer" content="no-referrer" />
+    <title>Ctrl+V</title>
+    <link rel="icon" href="/static/icon.png">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
+    <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
+    <script src="http://bitwiseshiftleft.github.io/sjcl/sjcl.js"></script>
+    <style type="text/css">
+        .content-area {
+            font-family: 'Open Sans', sans-serif;
+            -webkit-transition: all 0.3s ease-in-out;
+            transition: all 0.3s ease-in-out;
+        }
+    </style>
+</head>
+<body>
+    <div class="content-area">
+        <textarea id="textbox"></textarea>
+    </div>
+
+    <script>
+        var mde = new SimpleMDE({
+    		element: document.getElementById("textbox"),
+            spellChecker: false
+	    });
+
+        var password = window.location.hash.slice(1);
+        var ciphertext = "{{ ciphertext }}";
+
+        if (password) {
+            if (ciphertext && ciphertext.length > 1) {
+                try {
+                    var text = sjcl.decrypt(password, ciphertext, { ks:256 });
+                    mde.value(text);
+                } catch (err) {
+                    mde.value("Failed to decrypt content. **" + password + "** is not the right password.")
+                }
+            }
+        } else {
+            mde.value("Append **#password** to URL to decrypt content.")
+        }
+
+        mde.togglePreview();
+        mde.toggleFullScreen();
+    </script>
+</body>
