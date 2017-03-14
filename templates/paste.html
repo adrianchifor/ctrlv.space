@@ -23,7 +23,8 @@
     <script>
         var mde = new SimpleMDE({
     		element: document.getElementById("textbox"),
-            spellChecker: false
+            spellChecker: false,
+            autofocus: true
 	    });
 
         var password = window.location.hash.slice(1);
@@ -43,7 +44,7 @@
             mde.value("Append **#password** to URL to decrypt content.")
         }
 
-        mde.togglePreview();
+        mde.toggleSideBySide();
         mde.toggleFullScreen();
     </script>
 </body>
