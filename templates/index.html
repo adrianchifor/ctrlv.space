@@ -11,7 +11,7 @@
     <script src="/static/js/sjcl.js"></script>
     <script src="/static/js/password-generator.min.js"></script>
     <style type="text/css">
-        h1, h2, label, .btn, .content-area {
+        h1, h2, label, select, .btn, .content-area {
             font-family: 'Open Sans', sans-serif;
             -webkit-transition: all 0.3s ease-in-out;
             transition: all 0.3s ease-in-out;
@@ -52,7 +52,7 @@
             border-color:rgba(0,0,0,0.3);
         }
         .checkbox-area {
-            margin-bottom: 18px;
+            margin-bottom: 20px;
             text-align: center;
         }
         .checkbox {
@@ -98,6 +98,12 @@
             font-size: 18px;
             color: rgba(0,0,0,0.6);
         }
+        #selfDestructSelect {
+            margin-left: 5px;
+            font-size: 16px;
+            color: rgba(0,0,0,0.6);
+            background-color: white;
+        }
         .content-area {
             margin: 0px 16px 16px 16px;
         }
@@ -107,7 +113,7 @@
         #githubIcon {
             margin-bottom: 16px;
             font-size: 44px;
-	     color: black;
+            color: black;
         }
     </style>
 </head>
@@ -118,7 +124,13 @@
 
     <div class="checkbox-area">
         <input type="checkbox" class="checkbox" id="selfDestruct" checked>
-        <label id="selfDestructText" for="selfDestruct">Self-destruct once read</label>
+        <label id="selfDestructText" for="selfDestruct">Self-destruct</label>
+        <select id="selfDestructSelect">
+            <option value="read">once read</option>
+            <option value="1h">in 1 hour</option>
+            <option value="1d">in 1 day</option>
+            <option value="1w">in 1 week</option>
+        </select>
     </div>
 
     <div class="content-area">
@@ -168,13 +180,22 @@
             var formData = {};
 
             if ($('#selfDestruct').is(':checked')) {
-                var token = generatePassword(64, false);
-                var encryptedToken = sjcl.encrypt(password, token, { ks:256 });
+                var destructOption = $('#selfDestructSelect').val();
 
-                formData = {
-                    "ciphertext": String(ciphertext),
-                    "token": String(token),
-                    "encryptedToken": String(encryptedToken)
+                if (destructOption == "read") {
+                    var token = generatePassword(64, false);
+                    var encryptedToken = sjcl.encrypt(password, token, { ks:256 });
+
+                    formData = {
+                        "ciphertext": String(ciphertext),
+                        "token": String(token),
+                        "encryptedToken": String(encryptedToken)
+                    }
+                } else {
+                    formData = {
+                        "ciphertext": String(ciphertext),
+                        "destructOption": String(destructOption)
+                    }
                 }
             } else {
                 formData = {

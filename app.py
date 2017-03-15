@@ -1,6 +1,7 @@
 from flask import Flask, jsonify, request, render_template, make_response
 from redis import StrictRedis
 import os, hashlib, uuid, logging
+from datetime import timedelta
 
 get_hash = lambda: hashlib.md5(uuid.uuid4().bytes).hexdigest()[:12]
 
@@ -30,6 +31,16 @@ def api_v1_create():
     if ('token' in request.form) and ('encryptedToken' in request.form):
         db.set(key + "_encryptedToken", request.form['encryptedToken'])
         db.set(key + "_" + request.form['token'], True)
+
+    if 'destructOption' in request.form:
+        destructOption = request.form['destructOption']
+
+        if destructOption == "1h":
+            db.expire(key, timedelta(hours=1))
+        elif destructOption == "1d":
+            db.expire(key, timedelta(days=1))
+        elif destructOption == "1w":
+            db.expire(key, timedelta(weeks=1))
 
     return make_response(jsonify(error=None, key=key), 200)
 
