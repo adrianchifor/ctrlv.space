@@ -134,7 +134,7 @@
     		element: document.getElementById("textbox"),
     		spellChecker: false,
             autofocus: true
-	    });
+        });
 
         var saved = false;
         function save() {
@@ -190,6 +190,8 @@
                     );
 
                     saved = true;
+                    $('#save').fadeTo("fast", 0.5);
+                    $('#save').css('cursor', 'default');
                 }
             });
 
