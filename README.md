@@ -21,7 +21,7 @@ The paste viewing process:
 ## Env vars
 ```
 REDIS_URL (if using dokku, will be automatically set when linking with Redis service)
-GOOGLE_ANALYTICS
+GOOGLE_ANALYTICS (optional)
 ```
 
 ## Run
