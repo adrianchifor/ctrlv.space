@@ -55,8 +55,8 @@ def api_v1_destruct():
 @app.route("/")
 def index():
     googleAnalyticsId = ""
-    if 'GOOGLE_ANALYTICS' in os.environ:
-        googleAnalyticsId = os.environ['GOOGLE_ANALYTICS']
+    if 'GOOGLE_ANALYTICS_ID' in os.environ:
+        googleAnalyticsId = os.environ['GOOGLE_ANALYTICS_ID']
 
     return render_template("index.html", analyticsId=googleAnalyticsId)
 
@@ -64,7 +64,7 @@ def index():
 @app.route("/<key>")
 def paste(key):
     if not db.exists(key):
-        return render_template("404.html"), 404
+        return render_template("404.html", key=key), 404
 
     ciphertext = db.get(key)
 
@@ -73,8 +73,8 @@ def paste(key):
         encryptedToken = db.get(key + "_encryptedToken")
 
     googleAnalyticsId = ""
-    if 'GOOGLE_ANALYTICS' in os.environ:
-        googleAnalyticsId = os.environ['GOOGLE_ANALYTICS']
+    if 'GOOGLE_ANALYTICS_ID' in os.environ:
+        googleAnalyticsId = os.environ['GOOGLE_ANALYTICS_ID']
 
     return render_template("paste.html", ciphertext=str(ciphertext),
         encryptedToken=str(encryptedToken), key=key, analyticsId=googleAnalyticsId)

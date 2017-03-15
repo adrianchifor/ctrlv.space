@@ -21,10 +21,15 @@ The paste viewing process:
 ## Env vars
 ```
 REDIS_URL (if using dokku, will be automatically set when linking with Redis service)
-GOOGLE_ANALYTICS (optional)
+GOOGLE_ANALYTICS_ID (optional)
 ```
 
 ## Run
+
+Using Docker:
+* Use an external Redis or host your own: `docker run --name redis -d redis`
+* Run the app: `docker run -d --link redis:redis -p 5000:5000 -e REDIS_URL="redis://redis:6379" adrianchifor/ctrlv.space`
+  * If you're using an external Redis omit the `--link` and set the `REDIS_URL` accordingly. Also use whatever host port you want (e.g. `-p 80:5000`)
 
 Using [dokku](http://dokku.viewdocs.io/dokku/):
 * Create `ctrlv` app on dokku
