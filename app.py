@@ -42,7 +42,7 @@ def api_v1_destruct():
     key = request.form['key']
     token = request.form['token']
 
-    if (len(key) > 12) or (len(token) > 64):
+    if (not len(key) == 12) or (not len(token) == 64):
         return make_response(jsonify(error='Bad Request'), 400)
 
     if db.exists(key + "_" + token):
