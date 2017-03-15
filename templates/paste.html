@@ -6,6 +6,7 @@
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700">
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
     <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://cdn.rawgit.com/bitwiseshiftleft/sjcl/master/sjcl.js"></script>
     <style type="text/css">
         .content-area {
@@ -29,6 +30,7 @@
 
         var password = window.location.hash.slice(1);
         var ciphertext = "{{ ciphertext }}";
+        var encryptedToken = "{{ encryptedToken }}";
 
         if (password) {
             if (ciphertext && ciphertext.length > 1) {
@@ -40,7 +42,16 @@
                     mde.value("Failed to decrypt content. **" + password + "** is not the right password.")
                 }
             }
-        } else {
+
+            if (encryptedToken && encryptedToken.length > 1) {
+                encryptedToken = encryptedToken.replace(/&#34;/g, '"');
+
+                try {
+                    var token = sjcl.decrypt(password, encryptedToken, { ks:256 });
+                    $.post("/api/v1/destruct", { "key": "{{ key }}", "token": token }, function(data) {});
+                } catch (err) {}
+            }
+         } else {
             mde.value("Append **#password** to URL to decrypt content.")
         }
 

@@ -27,11 +27,29 @@ def api_v1_create():
     key = get_hash()
     db.set(key, ciphertext)
 
-    if 'destroy' in request.form:
-        if request.form['destroy'] == "true":
-            db.set(key + "_destroy", True)
+    if ('token' in request.form) and ('encryptedToken' in request.form):
+        db.set(key + "_encryptedToken", request.form['encryptedToken'])
+        db.set(key + "_" + request.form['token'], True)
 
     return make_response(jsonify(error=None, key=key), 200)
+
+
+@app.route('/api/v1/destruct', methods=['POST'])
+def api_v1_destruct():
+    if ('key' not in request.form) or ('token' not in request.form):
+        return make_response(jsonify(error='Bad Request'), 400)
+
+    key = request.form['key']
+    token = request.form['token']
+
+    if (len(key) > 12) or (len(token) > 64):
+        return make_response(jsonify(error='Bad Request'), 400)
+
+    if db.exists(key + "_" + token):
+        db.delete(key, key + "_encryptedToken", key + "_" + token)
+        return make_response(jsonify(error=None, success="true"), 200)
+    else:
+        return make_response(jsonify(error=None, success="false"), 200)
 
 
 @app.route("/")
@@ -46,11 +64,11 @@ def paste(key):
 
     ciphertext = db.get(key)
 
-    destroy_key = key + "_destroy"
-    if db.exists(destroy_key):
-        db.delete(key, destroy_key)
+    encryptedToken = ""
+    if db.exists(key + "_encryptedToken"):
+        encryptedToken = db.get(key + "_encryptedToken")
 
-    return render_template("paste.html", ciphertext=str(ciphertext))
+    return render_template("paste.html", ciphertext=str(ciphertext), encryptedToken=str(encryptedToken), key=key)
 
 
 if __name__ == '__main__':

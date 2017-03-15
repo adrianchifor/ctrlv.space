@@ -162,13 +162,26 @@
             var password = generatePassword(16, false);
             var ciphertext = sjcl.encrypt(password, mde.value(), { ks:256 });
 
-            $.post("/api/v1/create", {
-                "ciphertext": String(ciphertext),
-                "destroy": $('#selfDestruct').is(':checked')
-            }, function(data) {
+            var formData = {};
+
+            if ($('#selfDestruct').is(':checked')) {
+                var token = generatePassword(64, false);
+                var encryptedToken = sjcl.encrypt(password, token, { ks:256 });
+
+                formData = {
+                    "ciphertext": String(ciphertext),
+                    "token": String(token),
+                    "encryptedToken": String(encryptedToken)
+                }
+            } else {
+                formData = {
+                    "ciphertext": String(ciphertext)
+                }
+            }
+
+            $.post("/api/v1/create", formData, function(data) {
                 if (!data.error) {
                     $("#instruction").text("https://ctrlv.space/" + data.key + "#" + password);
-                    selectText('instruction');
                     saved = true;
                 }
             });
