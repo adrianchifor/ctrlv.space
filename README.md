@@ -21,6 +21,7 @@ The paste viewing process:
 ## Env vars
 ```
 REDIS_URL (if using dokku, will be automatically set when linking with Redis service)
+GOOGLE_ANALYTICS
 ```
 
 ## Run
@@ -28,6 +29,7 @@ REDIS_URL (if using dokku, will be automatically set when linking with Redis ser
 Using [dokku](http://dokku.viewdocs.io/dokku/):
 * Create `ctrlv` app on dokku
 * Create a Redis service on dokku using this [plugin](https://github.com/dokku/dokku-redis) and link it with `ctrlv` (this will set the `REDIS_URL` env var)
+* Set the rest of the env vars on dokku: `dokku config:set ctrlv <ENV>=<VALUE>`
 * Set the dokku remote in the git repo:
 `git remote add dokku dokku@example.com:ctrlv`
 * Deploy:
