@@ -4,7 +4,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ctrl+V</title>
     <link rel="icon" href="/static/icon.png">
-    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700">
+    <link rel="stylesheet" type="text/css" href="/static/css/font.css">
     <link rel="stylesheet" type="text/css" href="/static/css/simplemde.min.css">
     <script src="/static/js/simplemde.min.js"></script>
     <script src="/static/js/jquery.min.js"></script>
@@ -58,12 +58,16 @@
 
         mde.toggleFullScreen();
 
-        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-        })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+        var analyticsId = "{{ analyticsId }}";
 
-        ga('create', '{{ analyticsId }}', 'auto');
-        ga('send', 'pageview');
+        if (analyticsId.length > 1) {
+            (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+            })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+            ga('create', analyticsId, 'auto');
+            ga('send', 'pageview');
+        }
     </script>
 </body>
