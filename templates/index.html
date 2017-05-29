@@ -175,7 +175,7 @@
             }
 
             var password = generatePassword(16, false);
-            var ciphertext = sjcl.encrypt(password, mde.value(), { ks:256 });
+            var ciphertext = sjcl.encrypt(password, mde.value(), { mode: "gcm", ks:256 });
 
             var formData = {};
 
@@ -184,7 +184,7 @@
 
                 if (destructOption == "read") {
                     var token = generatePassword(64, false);
-                    var encryptedToken = sjcl.encrypt(password, token, { ks:256 });
+                    var encryptedToken = sjcl.encrypt(password, token, { mode: "gcm", ks:256 });
 
                     formData = {
                         "ciphertext": String(ciphertext),

@@ -1,6 +1,6 @@
 # [Ctrl + V Space](https://ctrlv.space)
 
-Encrypted paste service. **Encryption (AES256 using [Stanford Javascript Crypto Library](http://bitwiseshiftleft.github.io/sjcl/)) only happens on the client-side** and the **password is never sent to the server**.
+Encrypted paste service. **Encryption (AES256 GCM using [Stanford Javascript Crypto Library](http://bitwiseshiftleft.github.io/sjcl/)) only happens on the client-side** and the **password is never sent to the server**.
 
 The paste creation process:
 - Save button triggers `save()` function in *index.html*.

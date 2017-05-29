@@ -37,7 +37,7 @@
             if (ciphertext && ciphertext.length > 1) {
                 ciphertext = ciphertext.replace(/&#34;/g, '"');
                 try {
-                    var text = sjcl.decrypt(password, ciphertext, { ks:256 });
+                    var text = sjcl.decrypt(password, ciphertext, { mode: "gcm", ks:256 });
                     mde.value(text);
                 } catch (err) {
                     mde.value("Failed to decrypt content. **" + password + "** is not the right password.")
@@ -48,7 +48,7 @@
                 encryptedToken = encryptedToken.replace(/&#34;/g, '"');
 
                 try {
-                    var token = sjcl.decrypt(password, encryptedToken, { ks:256 });
+                    var token = sjcl.decrypt(password, encryptedToken, { mode: "gcm", ks:256 });
                     $.post("/api/v1/destruct", { "key": "{{ key }}", "token": token }, function(data) {});
                 } catch (err) {}
             }
