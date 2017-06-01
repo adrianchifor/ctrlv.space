@@ -1,6 +1,7 @@
 <!doctype html>
 <head>
     <meta name="referrer" content="no-referrer" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ctrl+V</title>
     <link rel="icon" href="/static/icon.png">
     <link rel="stylesheet" type="text/css" href="/static/css/font.css">
@@ -14,8 +15,15 @@
             font-size: 36px;
             color: rgba(0,0,0,0.7);
         }
+        #gif {
+          margin-top: 50px;
+        }
     </style>
 </head>
 <body>
     <h1>Paste not found.<br>It either self-destructed or the key in URL is wrong ({{ key }}).</h1>
+
+    <div id="gif" align="center">
+      <img src="https://thecatapi.com/api/images/get?format=src&type=gif">
+    </div>
 </body>
