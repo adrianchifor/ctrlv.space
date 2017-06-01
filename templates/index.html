@@ -148,6 +148,8 @@
             autofocus: true
         });
 
+        $('#selfDestruct').attr('disabled', {{ selfDestructMandatory }});
+
         var saved = false;
         function save() {
             if (saved) {
@@ -227,6 +229,7 @@
             } else if (window.getSelection) {
                 var range = document.createRange();
                 range.selectNode(document.getElementById(containerId));
+                window.getSelection().removeAllRanges();
                 window.getSelection().addRange(range);
             }
         }

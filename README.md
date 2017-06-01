@@ -25,6 +25,7 @@ The paste viewing process:
 ## Env vars
 ```
 REDIS_URL (if using dokku, will be automatically set when linking with Redis service)
+SELF_DESTRUCT_MANDATORY (optional) - If set, will disable the 'Self-destruct' checkbox so it's always ticked.
 GOOGLE_ANALYTICS_ID (optional)
 ```
 

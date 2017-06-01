@@ -65,11 +65,16 @@ def api_v1_destruct():
 
 @app.route("/")
 def index():
+    selfDestructMandatory = "false"
+    if 'SELF_DESTRUCT_MANDATORY' in os.environ:
+        selfDestructMandatory = "true"
+
     googleAnalyticsId = ""
     if 'GOOGLE_ANALYTICS_ID' in os.environ:
         googleAnalyticsId = os.environ['GOOGLE_ANALYTICS_ID']
 
-    return render_template("index.html", analyticsId=googleAnalyticsId)
+    return render_template("index.html", selfDestructMandatory=selfDestructMandatory,
+        analyticsId=googleAnalyticsId)
 
 
 @app.route("/<key>")
