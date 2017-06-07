@@ -64,7 +64,7 @@ def api_v1_destruct():
 
 
 @app.route('/health')
-def health_check:
+def health_check():
     return make_response("", 200)
 
 
