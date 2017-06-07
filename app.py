@@ -63,6 +63,11 @@ def api_v1_destruct():
         return make_response(jsonify(error=None, success="false"), 200)
 
 
+@app.route('/health')
+def health_check:
+    return make_response("", 200)
+
+
 @app.route("/")
 def index():
     selfDestructMandatory = "false"
@@ -97,4 +102,4 @@ def paste(key):
 
 
 if __name__ == '__main__':
-    app.run('0.0.0.0', port=5000, debug=True)
+    app.run('0.0.0.0', port=5000)
