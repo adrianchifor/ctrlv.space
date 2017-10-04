@@ -148,9 +148,18 @@
             autofocus: true
         });
 
+        var saved = false;
+
+        mde.codemirror.on("change", function() {
+            if (saved) {
+                saved = false;
+                $('#save').fadeTo("fast", 1);;
+                $('#save').css('cursor', 'pointer');
+            }
+        });
+
         $('#selfDestruct').attr('disabled', {{ selfDestructMandatory }});
 
-        var saved = false;
         function save() {
             if (saved) {
                 return false;
