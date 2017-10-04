@@ -166,8 +166,8 @@
                 return false;
             }
 
-            if (mde.value().length > 5000) {
-                $("#instruction").text("Maximum length is 5000.");
+            if (mde.value().length > {{ maxLength }}) {
+                $("#instruction").text("Maximum length is {{ maxLength }}.");
 
                 setTimeout(function() {
                     $("#instruction").text("Just write, save and share the link.");

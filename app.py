@@ -1,5 +1,6 @@
 from flask import Flask, jsonify, request, render_template, make_response
 from redis import StrictRedis
+from redis.exceptions import ConnectionError
 import os, hashlib, uuid, logging
 from datetime import timedelta
 
@@ -7,7 +8,13 @@ get_hash = lambda: hashlib.md5(uuid.uuid4().bytes).hexdigest()[:12]
 
 app = Flask(__name__)
 
-db = StrictRedis.from_url(os.environ['REDIS_URL'], db=2, decode_responses=True)
+db = StrictRedis.from_url(os.environ.get('REDIS_URL', "redis://localhost:6379"), db=2, decode_responses=True)
+
+try:
+    db.ping()
+except (ConnectionError):
+    print("Cannot connect to Redis. Make sure it's running at REDIS_URL or localhost:6379")
+    quit()
 
 @app.before_first_request
 def setup_logging():
@@ -20,9 +27,11 @@ def api_v1_create():
     if 'ciphertext' not in request.form:
         return make_response(jsonify(error='Bad Request'), 400)
 
+    maxLength = os.environ.get('MAX_LENGTH', 5000)
+
     ciphertext = request.form['ciphertext']
 
-    if (not isinstance(ciphertext, str)) or (len(ciphertext) > 5100) or (len(ciphertext) == 0):
+    if (not isinstance(ciphertext, str)) or (len(ciphertext) > maxLength) or (len(ciphertext) == 0):
         return make_response(jsonify(error='Bad Request'), 400)
 
     key = get_hash()
@@ -70,16 +79,12 @@ def health_check():
 
 @app.route("/")
 def index():
-    selfDestructMandatory = "false"
-    if 'SELF_DESTRUCT_MANDATORY' in os.environ:
-        selfDestructMandatory = "true"
-
-    googleAnalyticsId = ""
-    if 'GOOGLE_ANALYTICS_ID' in os.environ:
-        googleAnalyticsId = os.environ['GOOGLE_ANALYTICS_ID']
+    selfDestructMandatory = os.environ.get('SELF_DESTRUCT_MANDATORY', "false")
+    maxLength = os.environ.get('MAX_LENGTH', 5000)
+    googleAnalyticsId = os.environ.get('GOOGLE_ANALYTICS_ID', "")
 
     return render_template("index.html", selfDestructMandatory=selfDestructMandatory,
-        analyticsId=googleAnalyticsId)
+        maxLength=maxLength, analyticsId=googleAnalyticsId)
 
 
 @app.route("/<key>")
@@ -93,9 +98,7 @@ def paste(key):
     if db.exists(key + "_encryptedToken"):
         encryptedToken = db.get(key + "_encryptedToken")
 
-    googleAnalyticsId = ""
-    if 'GOOGLE_ANALYTICS_ID' in os.environ:
-        googleAnalyticsId = os.environ['GOOGLE_ANALYTICS_ID']
+    googleAnalyticsId = os.environ.get('GOOGLE_ANALYTICS_ID', "")
 
     return render_template("paste.html", ciphertext=str(ciphertext),
         encryptedToken=str(encryptedToken), key=key, analyticsId=googleAnalyticsId)
