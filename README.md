@@ -24,9 +24,9 @@ The paste viewing process:
 
 ## Env vars
 
-`REDIS_URL` - defaults to `redis://localhost:6379` (if using dokku, will be automatically set when linking with Redis service)
-`SELF_DESTRUCT_MANDATORY` - defaults to false (If set, will disable the 'Self-destruct' checkbox so it's always ticked)
-`MAX_LENGTH` - defaults to 5000 (Maximum number of characters allowed in the text box)
+`REDIS_URL` - defaults to redis://localhost:6379 (if using dokku, will be automatically set when linking with Redis service)<br>
+`SELF_DESTRUCT_MANDATORY` - defaults to false (If set, will disable the 'Self-destruct' checkbox so it's always ticked)<br>
+`MAX_LENGTH` - defaults to 5000 (Maximum number of characters allowed in the text box)<br>
 `GOOGLE_ANALYTICS_ID` - defaults to ""
 
 ## Run
