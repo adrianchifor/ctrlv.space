@@ -27,7 +27,7 @@ def api_v1_create():
     if 'ciphertext' not in request.form:
         return make_response(jsonify(error='Bad Request'), 400)
 
-    maxLength = os.environ.get('MAX_LENGTH', 5000)
+    maxLength = int(os.environ.get('MAX_LENGTH', 5000))
 
     ciphertext = request.form['ciphertext']
 
@@ -80,7 +80,7 @@ def health_check():
 @app.route("/")
 def index():
     selfDestructMandatory = os.environ.get('SELF_DESTRUCT_MANDATORY', "false")
-    maxLength = os.environ.get('MAX_LENGTH', 5000)
+    maxLength = int(os.environ.get('MAX_LENGTH', 5000))
     googleAnalyticsId = os.environ.get('GOOGLE_ANALYTICS_ID', "")
 
     return render_template("index.html", selfDestructMandatory=selfDestructMandatory,
