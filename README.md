@@ -47,7 +47,7 @@ Using [dokku](http://dokku.viewdocs.io/dokku/):
 
 ### License
 
-Copyright &copy; 2017 Adrian Chifor
+Copyright &copy; 2018 Adrian Chifor
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
