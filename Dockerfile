@@ -7,7 +7,7 @@ WORKDIR /app
 RUN apk add --update gcc musl-dev \
     && rm -rf /var/cache/apk/*
 
-RUN pip install 'Flask==0.12.2' 'redis==2.10.5' 'gunicorn==19.7' 'gevent==1.2.2'
+RUN pip install 'Flask==1.0.2' 'redis==2.10.6' 'gunicorn==19.8.1' 'gevent==1.2.2'
 
 EXPOSE 5000
 
