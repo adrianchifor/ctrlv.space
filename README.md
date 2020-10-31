@@ -37,7 +37,7 @@ The paste viewing process:
 
 Using Docker:
 * Use an external Redis or host your own: `docker run --name redis -d redis`
-* Run the app: `docker run -d --link redis:redis -p 80:5000 -e REDIS_URL="redis://redis:6379" adrianchifor/ctrlv.space`
+* Run the app: `docker run -d --link redis:redis -p 80:5000 -e REDIS_URL="redis://redis:6379" ghcr.io/adrianchifor/ctrlv.space:latest`
   * If you're using an external Redis omit the `--link` and set the `REDIS_URL` accordingly.
 
 Using [dokku](http://dokku.viewdocs.io/dokku/):
@@ -51,7 +51,7 @@ Using [dokku](http://dokku.viewdocs.io/dokku/):
 
 ### License
 
-Copyright &copy; 2018 Adrian Chifor
+Copyright &copy; 2020 Adrian Chifor
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
