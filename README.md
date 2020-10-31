@@ -1,5 +1,7 @@
 # Ctrl + V Space
 
+[![Docker](https://github.com/adrianchifor/ctrlv.space/workflows/Publish%20Docker/badge.svg)](https://github.com/adrianchifor/ctrlv.space/actions?query=workflow%3A%22Publish+Docker%22)
+
 Encrypted paste service. **Encryption (AES256 GCM using [Stanford Javascript Crypto Library](http://bitwiseshiftleft.github.io/sjcl/)) only happens on the client-side** and the **password is never sent to the server**.
 
 <img src="./ctrlv.png" width="768">
