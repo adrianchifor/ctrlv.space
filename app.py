@@ -39,7 +39,7 @@ def api_v1_create():
 
     if ('token' in request.form) and ('encryptedToken' in request.form):
         db.set(key + "_encryptedToken", request.form['encryptedToken'])
-        db.set(key + "_" + request.form['token'], True)
+        db.set(key + "_" + request.form['token'], 'true')
 
     if 'destructOption' in request.form:
         destructOption = request.form['destructOption']
